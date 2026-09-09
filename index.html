@@ -260,28 +260,39 @@
   .set-indicator { display: flex; gap: 6px; margin-bottom: 16px; }
   .set-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
   .set-dot.done { background: var(--green); }
-  .set-dot.current { background: var(--accent); }
+  .set-dot.current { background: var(--green); }
 
-  .reps-display { font-size: 22px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+  .reps-display { font-size: 22px; font-weight: 600; color: var(--green); margin-bottom: 6px; }
   .ex-note-workout { font-size: 17px; color: var(--muted); line-height: 1.5; flex: 1; overflow-y: auto; }
 
   .timer-section { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 16px 0 20px; }
-  .timer-ring-wrap { position: relative; width: 200px; height: 200px; margin-bottom: 16px; }
+  .timer-ring-wrap {
+    position: relative; width: 200px; height: 200px; margin-bottom: 16px;
+    cursor: pointer; user-select: none; -webkit-user-select: none;
+  }
+  .timer-ring-wrap:active { opacity: 0.8; }
   .timer-ring-wrap svg { transform: rotate(-90deg); width: 100%; height: 100%; }
   .timer-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
 
   .timer-ring-fill {
     fill: none;
-    stroke: var(--accent);
+    stroke: var(--green);
     stroke-width: 8;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.25s linear, stroke 0.3s;
   }
-  .timer-ring-fill.rest-ring { stroke: var(--green); }
+  .timer-ring-fill.rest-ring { stroke: var(--accent); }
 
   .timer-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
   .timer-number { font-size: 58px; font-weight: 700; font-family: var(--mono); letter-spacing: -1px; line-height: 1; }
   .timer-number.paused { color: var(--warn); }
+  .tap-hint {
+    font-size: 12px;
+    color: var(--muted2);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
   .timer-label {
     font-size: 14px;
     color: var(--muted);
@@ -308,9 +319,9 @@
 
   .btn-primary {
     flex: 2;
-    background: var(--accent);
+    background: var(--green);
     border: none;
-    color: #fff;
+    color: #000;
     font-size: 20px;
     font-weight: 700;
     border-radius: 16px;
@@ -318,7 +329,7 @@
     cursor: pointer;
   }
   .btn-primary:active { opacity: 0.85; }
-  .btn-primary.green-btn { background: var(--green); color: #000; }
+  .btn-primary.rest-btn { background: var(--accent); color: #fff; }
 
   /* REST state */
   .rest-overlay {
@@ -358,8 +369,8 @@
   .next-up-reps { font-size: 15px; color: var(--accent); font-family: var(--mono); margin-top: 3px; }
 
   .skip-rest-btn {
-    background: var(--green);
-    color: #000;
+    background: var(--accent);
+    color: #fff;
     border: none;
     width: 100%;
     max-width: 320px;
@@ -469,17 +480,18 @@
     <div class="rest-title">Rest</div>
     <div class="rest-subtitle" id="restSubtitle"></div>
     <div class="timer-section">
-      <div class="timer-ring-wrap">
+      <div class="timer-ring-wrap" onclick="togglePause()" role="button" tabindex="0" aria-label="Pause or resume the rest timer">
         <svg viewBox="0 0 160 160">
           <circle class="timer-ring-bg" cx="80" cy="80" r="68"/>
           <circle class="timer-ring-fill rest-ring" id="restRingFill" cx="80" cy="80" r="68"
             stroke-dasharray="427.26" stroke-dashoffset="0"/>
         </svg>
         <div class="timer-center">
-          <div class="timer-number" id="restTimerDisplay">20</div>
+          <div class="timer-number" id="restTimerDisplay">30</div>
           <div class="timer-label" id="restTimerLabel">rest</div>
         </div>
       </div>
+      <div class="tap-hint" id="restTapHint">tap ring to pause</div>
     </div>
     <div class="next-up-card">
       <div class="next-up-label">Next up</div>
@@ -498,7 +510,7 @@
     <div class="ex-note-workout" id="exNote">—</div>
 
     <div class="timer-section">
-      <div class="timer-ring-wrap">
+      <div class="timer-ring-wrap" onclick="togglePause()" role="button" tabindex="0" aria-label="Pause or resume the set timer">
         <svg viewBox="0 0 160 160">
           <circle class="timer-ring-bg" cx="80" cy="80" r="68"/>
           <circle class="timer-ring-fill" id="workRingFill" cx="80" cy="80" r="68"
@@ -509,6 +521,7 @@
           <div class="timer-label" id="workTimerLabel">work</div>
         </div>
       </div>
+      <div class="tap-hint" id="workTapHint">tap ring to pause</div>
     </div>
   </div>
 
@@ -547,20 +560,20 @@
 'use strict';
 
 const CIRCUMFERENCE = 2 * Math.PI * 68; // 427.26
-const REST_DURATION = 20;               // seconds between sets
+const REST_DURATION = 30;               // seconds between sets
 const STORE_KEY = 'workoutRotation_v2';
 
 /* ══════════════ PROGRAM ══════════════ */
 const DAYS = [
   {
     id: 'd1', label: 'Day 1', name: 'Push', dot: '1', dotClass: 'dot-push',
-    focus: 'Horizontal + vertical press', duration: '~14 min',
+    focus: 'Horizontal + vertical press', duration: '~15 min',
     exercises: [
       { name: 'DB Bench Press', sets: 3, reps: '8 reps', workTime: 45,
         note: 'Full ROM, 3s eccentric. Controlled scapular retraction at bottom.' },
       { name: 'Single-arm DB Overhead Press', sets: 3, reps: '8 reps / side', workTime: 50,
         note: 'Seated or standing. Expose and close asymmetries.' },
-      { name: 'Weighted Dips', sets: 3, reps: '8 reps', workTime: 45,
+      { name: 'Dips', sets: 3, reps: '8 reps', workTime: 45,
         note: 'Neutral grip. Depth to upper arm parallel, add ROM as shoulders allow.' },
       { name: 'DB Lateral Raise', sets: 3, reps: '12 reps', workTime: 40,
         note: 'Rotator cuff and posterior delt longevity. Slight forward lean, pinky up.' },
@@ -568,10 +581,10 @@ const DAYS = [
   },
   {
     id: 'd2', label: 'Day 2', name: 'Pull', dot: '2', dotClass: 'dot-pull',
-    focus: 'Vertical + horizontal pull · scapular health', duration: '~14 min',
+    focus: 'Vertical + horizontal pull · scapular health', duration: '~15 min',
     exercises: [
-      { name: 'Weighted Pull-up', sets: 3, reps: '5–6 reps', workTime: 45,
-        note: 'DB between legs or belt. Dead hang start, full scapular depression at top. Primary strength stimulus.' },
+      { name: 'Pull-up', sets: 3, reps: '5–6 reps', workTime: 45,
+        note: 'Dead hang start, full scapular depression at top. Primary strength stimulus.' },
       { name: 'Single-arm DB Row', sets: 3, reps: '10 reps / side', workTime: 55,
         note: 'Bench-supported. Full stretch at bottom, drive elbow to hip.' },
       { name: 'DB Face Pull (bent-over)', sets: 3, reps: '15 reps', workTime: 45,
@@ -582,7 +595,7 @@ const DAYS = [
   },
   {
     id: 'd3', label: 'Day 3', name: 'Hinge / Squat', dot: '3', dotClass: 'dot-lower',
-    focus: 'Posterior chain + unilateral lower', duration: '~17 min',
+    focus: 'Posterior chain + unilateral lower', duration: '~20 min',
     exercises: [
       { name: 'Single-leg Romanian Deadlift', sets: 3, reps: '8 reps / side', workTime: 55,
         note: '3s eccentric. Hip-width hinge, neutral spine. Load progressively.' },
@@ -598,20 +611,18 @@ const DAYS = [
   },
   {
     id: 'd4', label: 'Day 4', name: 'Core', dot: '4', dotClass: 'dot-core',
-    focus: 'Mat, bench and bar · upper, lower, obliques', duration: '~19 min',
+    focus: 'Mat, bench, bar and dip bars · upper, lower, obliques', duration: '~18 min',
     exercises: [
       { name: 'Hanging Leg Raise', sets: 3, reps: '8–12 reps', workTime: 45, tag: 'lower',
         note: 'Bar. Straight legs, no swing. Posterior pelvic tilt at the top. Progress knees, then L-raise, then toes-to-bar.' },
       { name: 'Dragon Flag', sets: 3, reps: '5–8 reps', workTime: 45, tag: 'upper',
         note: 'Bench. Grip behind head, body rigid ankles to shoulders, 3–5s eccentric. Scale tucked or single-bent-leg if form breaks.' },
-      { name: 'Hollow Body Rock', sets: 3, reps: '25–30s', workTime: 45, tag: 'upper',
-        note: 'Mat. Low back pinned flat, arms overhead. Rock from the shoulders, ribs down throughout.' },
       { name: 'Reverse Crunch', sets: 3, reps: '12–15 reps', workTime: 45, tag: 'lower',
         note: 'Mat. Hands flat beside hips. Curl the pelvis off the floor, lower over 3s. No momentum, no foot swing.' },
       { name: 'Copenhagen Plank', sets: 3, reps: '25–30s / side', workTime: 45, tag: 'oblique',
         note: 'Bench. Straight top leg on the bench, full lever. Add top-leg raises to progress.' },
-      { name: 'Side Plank Hip Dip', sets: 3, reps: '12 reps / side', workTime: 45, tag: 'oblique',
-        note: 'Mat. Forearm side plank, lower the hip toward the floor and drive back up. Shoulders stacked, no forward rotation.' },
+      { name: 'Oblique Knee Raise', sets: 3, reps: '10 reps / side', workTime: 45, tag: 'oblique',
+        note: 'Dip bars. Support on straight arms, shoulders down away from the ears. Draw both knees up and across to one side, alternating. Curl the pelvis, no swing.' },
     ]
   },
 ];
@@ -808,7 +819,8 @@ let completedSets = new Set();
 let wakeLock = null;
 
 /* active countdown descriptor, so backgrounding can pause it cleanly */
-let active = null; // { kind, total, remaining, endTime, paused }
+let active = null;      // { kind, total, remaining, endTime, paused, manualPaused }
+let pauseStart = null;  // wall-clock ms when the current pause began
 
 function buildSteps(day) {
   steps = [];
@@ -843,6 +855,7 @@ function startWorkout() {
 
   clearInterval(elapsedTimer);
   elapsedTimer = setInterval(() => {
+    if (active && active.paused) return;   // clock holds while paused
     elapsedSeconds = Math.floor((Date.now() - sessionStartTime) / 1000);
     const m = Math.floor(elapsedSeconds / 60);
     const s = elapsedSeconds % 60;
@@ -911,7 +924,7 @@ function showRest(step) {
 
   const nextBtn = document.getElementById('nextBtn');
   nextBtn.textContent = 'Start Next';
-  nextBtn.className = 'btn-primary green-btn';
+  nextBtn.className = 'btn-primary rest-btn';
 
   startCountdown('rest', step.duration);
 }
@@ -921,7 +934,7 @@ function showRest(step) {
    and paused outright while the page is hidden. */
 function startCountdown(kind, seconds) {
   clearTimers();
-  active = { kind, total: seconds, remaining: seconds, endTime: Date.now() + seconds * 1000, paused: false };
+  active = { kind, total: seconds, remaining: seconds, endTime: Date.now() + seconds * 1000, paused: false, manualPaused: false };
   paintCountdown();
 
   const id = setInterval(() => {
@@ -948,11 +961,44 @@ function paintCountdown() {
   const numEl = document.getElementById(isWork ? 'workTimerDisplay' : 'restTimerDisplay');
   const labEl = document.getElementById(isWork ? 'workTimerLabel' : 'restTimerLabel');
   const fill  = document.getElementById(isWork ? 'workRingFill' : 'restRingFill');
+  const hintEl = document.getElementById(isWork ? 'workTapHint' : 'restTapHint');
 
   numEl.textContent = active.remaining;
   numEl.classList.toggle('paused', active.paused);
   labEl.textContent = active.paused ? 'paused' : (isWork ? 'work' : 'rest');
+  fill.style.stroke = active.paused ? 'var(--warn)' : '';
   fill.style.strokeDashoffset = CIRCUMFERENCE * (1 - active.remaining / active.total);
+  if (hintEl) hintEl.textContent = active.paused ? 'tap ring to resume' : 'tap ring to pause';
+}
+
+/* ══════════════ PAUSE ══════════════
+   Manual pauses survive backgrounding; automatic ones (page hidden)
+   lift again as soon as the app comes back to the foreground. */
+function pauseCountdown(manual) {
+  if (!active || active.paused) return;
+  active.remaining = Math.max(0, Math.ceil((active.endTime - Date.now()) / 1000));
+  active.paused = true;
+  if (manual) active.manualPaused = true;
+  if (pauseStart === null) pauseStart = Date.now();
+  try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) { /* no-op */ }
+  paintCountdown();
+}
+
+function resumeCountdown() {
+  if (!active || !active.paused) return;
+  active.endTime = Date.now() + active.remaining * 1000;
+  active.paused = false;
+  active.manualPaused = false;
+  if (pauseStart !== null) {
+    sessionStartTime += Date.now() - pauseStart;   // paused time is not session time
+    pauseStart = null;
+  }
+  paintCountdown();
+}
+
+function togglePause() {
+  if (!active) return;
+  if (active.paused) resumeCountdown(); else pauseCountdown(true);
 }
 
 function clearTimers() {
@@ -960,23 +1006,17 @@ function clearTimers() {
   clearInterval(restTimer);
   workTimer = restTimer = null;
   active = null;
+  pauseStart = null;
   try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) { /* no-op */ }
 }
 
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    if (active && !active.paused) {
-      active.remaining = Math.max(0, Math.ceil((active.endTime - Date.now()) / 1000));
-      active.paused = true;
-    }
+    pauseCountdown(false);
     try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) { /* no-op */ }
     releaseWakeLock();
   } else {
-    if (active && active.paused) {
-      active.endTime = Date.now() + active.remaining * 1000;
-      active.paused = false;
-      paintCountdown();
-    }
+    if (active && active.paused && !active.manualPaused) resumeCountdown();
     if (document.getElementById('workout').classList.contains('active')) requestWakeLock();
   }
 });

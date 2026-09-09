@@ -42,9 +42,19 @@ Everything lives in the `DAYS` array near the top of the `<script>` block in `in
 
 `workTime` is the set countdown in seconds. `tag` is optional and only used on the core day (`upper`, `lower`, `oblique`).
 
-Rest between sets is one constant, `REST_DURATION`, currently 20 seconds.
+Rest between sets is one constant, `REST_DURATION`, currently 30 seconds.
 
 After editing, commit the file. Reload the app once while online to pick up the new version, since the service worker fetches from the network first.
+
+## Timers and pausing
+
+Both countdowns run off a wall-clock end time, so the display never drifts.
+
+- Tap the timer ring to pause, tap again to resume. The number turns amber, the ring turns amber and the label reads `paused`.
+- The session clock at the top right holds while paused, so a pause does not inflate your session time.
+- Backgrounding the app pauses the countdown automatically and resumes it when you come back. A pause you set by hand survives backgrounding and only lifts when you tap the ring again.
+
+Green is work, blue is rest, amber is paused.
 
 ## Rotation tracking
 
