@@ -50,11 +50,11 @@ After editing, commit the file. Reload the app once while online to pick up the 
 
 Both countdowns run off a wall-clock end time, so the display never drifts.
 
-- Tap the timer ring to pause, tap again to resume. The number turns amber, the ring turns amber and the label reads `paused`.
+- Tap the timer ring to pause, tap again to resume. The number and ring turn grey and the label reads `paused`.
 - The session clock at the top right holds while paused, so a pause does not inflate your session time.
 - Backgrounding the app pauses the countdown automatically and resumes it when you come back. A pause you set by hand survives backgrounding and only lifts when you tap the ring again.
 
-Green is work, blue is rest, amber is paused.
+Green is work, burnt orange is rest, grey is paused.
 
 ## Rotation tracking
 

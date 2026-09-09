@@ -24,6 +24,8 @@
     --warn: #f7a24f;
     --warn-dim: #2d1e0a;
     --red: #e05c5c;
+    --rest: #d9622f;        /* burnt orange: rest */
+    --paused: #9aa2bd;      /* neutral grey: paused */
     --text: #eaedf5;
     --muted: #5a6280;
     --muted2: #3a4060;
@@ -281,11 +283,11 @@
     stroke-linecap: round;
     transition: stroke-dashoffset 0.25s linear, stroke 0.3s;
   }
-  .timer-ring-fill.rest-ring { stroke: var(--accent); }
+  .timer-ring-fill.rest-ring { stroke: var(--rest); }
 
   .timer-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
   .timer-number { font-size: 58px; font-weight: 700; font-family: var(--mono); letter-spacing: -1px; line-height: 1; }
-  .timer-number.paused { color: var(--warn); }
+  .timer-number.paused { color: var(--paused); }
   .tap-hint {
     font-size: 12px;
     color: var(--muted2);
@@ -329,7 +331,7 @@
     cursor: pointer;
   }
   .btn-primary:active { opacity: 0.85; }
-  .btn-primary.rest-btn { background: var(--accent); color: #fff; }
+  .btn-primary.rest-btn { background: var(--rest); color: #fff; }
 
   /* REST state */
   .rest-overlay {
@@ -366,10 +368,10 @@
     margin-bottom: 6px;
   }
   .next-up-name { font-size: 20px; font-weight: 600; }
-  .next-up-reps { font-size: 15px; color: var(--accent); font-family: var(--mono); margin-top: 3px; }
+  .next-up-reps { font-size: 15px; color: var(--rest); font-family: var(--mono); margin-top: 3px; }
 
   .skip-rest-btn {
-    background: var(--accent);
+    background: var(--rest);
     color: #fff;
     border: none;
     width: 100%;
@@ -966,7 +968,7 @@ function paintCountdown() {
   numEl.textContent = active.remaining;
   numEl.classList.toggle('paused', active.paused);
   labEl.textContent = active.paused ? 'paused' : (isWork ? 'work' : 'rest');
-  fill.style.stroke = active.paused ? 'var(--warn)' : '';
+  fill.style.stroke = active.paused ? 'var(--paused)' : '';
   fill.style.strokeDashoffset = CIRCUMFERENCE * (1 - active.remaining / active.total);
   if (hintEl) hintEl.textContent = active.paused ? 'tap ring to resume' : 'tap ring to pause';
 }
