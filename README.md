@@ -40,7 +40,7 @@ Everything lives in the `DAYS` array near the top of the `<script>` block in `in
   note: 'Full ROM, 3s eccentric.', tag: 'upper' }
 ```
 
-`workTime` is the set countdown in seconds. `tag` is optional and only used on the core day (`upper`, `lower`, `oblique`).
+`workTime` is the set countdown in seconds. `tag` is optional and only used on the core day (`upper`, `lower`, `oblique`). `setCues` is an optional array of per-set labels (used for the alternating wide and narrow pull-up grips).
 
 Rest between sets is one constant, `REST_DURATION`, currently 30 seconds.
 

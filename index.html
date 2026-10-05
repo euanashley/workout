@@ -569,12 +569,14 @@ const STORE_KEY = 'workoutRotation_v2';
 const DAYS = [
   {
     id: 'd1', label: 'Day 1', name: 'Push', dot: '1', dotClass: 'dot-push',
-    focus: 'Horizontal + vertical press', duration: '~15 min',
+    focus: 'Incline + vertical press · chest fly', duration: '~18 min',
     exercises: [
-      { name: 'DB Bench Press', sets: 3, reps: '8 reps', workTime: 45,
-        note: 'Full ROM, 3s eccentric. Controlled scapular retraction at bottom.' },
-      { name: 'Single-arm DB Overhead Press', sets: 3, reps: '8 reps / side', workTime: 50,
-        note: 'Seated or standing. Expose and close asymmetries.' },
+      { name: 'Incline DB Bench Press', sets: 3, reps: '8 reps', workTime: 45,
+        note: 'Bench at 30°. Full ROM, 3s eccentric. Controlled scapular retraction at bottom.' },
+      { name: 'DB Floor Fly', sets: 3, reps: '10–12 reps', workTime: 45,
+        note: 'Lying on the floor, slight bend at the elbow. Lower until the upper arms touch the floor, pause, squeeze back together over the chest.' },
+      { name: 'Hammer Curl to Overhead Press', sets: 3, reps: '8 reps', workTime: 50,
+        note: 'Both DBs, standing. Neutral-grip curl to the shoulders, then press overhead in one movement. Reverse under control. No leg drive.' },
       { name: 'Dips', sets: 3, reps: '8 reps', workTime: 45,
         note: 'Neutral grip. Depth to upper arm parallel, add ROM as shoulders allow.' },
       { name: 'DB Lateral Raise', sets: 3, reps: '12 reps', workTime: 40,
@@ -583,28 +585,27 @@ const DAYS = [
   },
   {
     id: 'd2', label: 'Day 2', name: 'Pull', dot: '2', dotClass: 'dot-pull',
-    focus: 'Vertical + horizontal pull · scapular health', duration: '~15 min',
+    focus: 'Vertical + horizontal pull · scapular health', duration: '~18 min',
     exercises: [
-      { name: 'Pull-up', sets: 3, reps: '5–6 reps', workTime: 45,
-        note: 'Dead hang start, full scapular depression at top. Primary strength stimulus.' },
+      { name: 'Pull-up', sets: 4, reps: 'to failure', workTime: 75,
+        setCues: ['Wide grip', 'Narrow grip', 'Wide grip', 'Narrow grip'],
+        note: 'Alternate wide and narrow grip set to set. Dead hang first, pull-ups to failure, then finish with a slow eccentric lowering from the top.' },
       { name: 'Single-arm DB Row', sets: 3, reps: '10 reps / side', workTime: 55,
         note: 'Bench-supported. Full stretch at bottom, drive elbow to hip.' },
-      { name: 'DB Face Pull (bent-over)', sets: 3, reps: '15 reps', workTime: 45,
-        note: 'Neutral grip. Posterior delt and cuff emphasis. Light load, high control.' },
       { name: 'DB Curl', sets: 3, reps: '12 reps', workTime: 40,
         note: 'Alternating. Elbow health, supinate at top.' },
+      { name: 'DB Face Pull (bent-over)', sets: 3, reps: '15 reps', workTime: 45,
+        note: 'Neutral grip. Posterior delt and cuff emphasis. Light load, high control.' },
     ]
   },
   {
     id: 'd3', label: 'Day 3', name: 'Hinge / Squat', dot: '3', dotClass: 'dot-lower',
-    focus: 'Posterior chain + unilateral lower', duration: '~20 min',
+    focus: 'Posterior chain + unilateral lower', duration: '~16 min',
     exercises: [
       { name: 'Single-leg Romanian Deadlift', sets: 3, reps: '8 reps / side', workTime: 55,
         note: '3s eccentric. Hip-width hinge, neutral spine. Load progressively.' },
       { name: 'Bulgarian Split Squat', sets: 3, reps: '8 reps / side', workTime: 55,
         note: 'DBs at sides or goblet. Rear foot on bench, front knee tracks second toe.' },
-      { name: 'Step-up (bench)', sets: 3, reps: '10 reps / side', workTime: 50,
-        note: 'Single-leg, controlled descent. Drive through heel. Resist lateral trunk shift.' },
       { name: 'Lateral Lunge', sets: 3, reps: '10 reps / side', workTime: 50,
         note: 'DBs at sides. Frontal plane strength. Sit into the hip.' },
       { name: "Farmer's Carry", sets: 3, reps: '30 m', workTime: 45,
@@ -613,18 +614,16 @@ const DAYS = [
   },
   {
     id: 'd4', label: 'Day 4', name: 'Core', dot: '4', dotClass: 'dot-core',
-    focus: 'Mat, bench, bar and dip bars · upper, lower, obliques', duration: '~18 min',
+    focus: 'Tower abs station and bench · upper, lower, obliques', duration: '~15 min',
     exercises: [
-      { name: 'Hanging Leg Raise', sets: 3, reps: '8–12 reps', workTime: 45, tag: 'lower',
-        note: 'Bar. Straight legs, no swing. Posterior pelvic tilt at the top. Progress knees, then L-raise, then toes-to-bar.' },
-      { name: 'Dragon Flag', sets: 3, reps: '5–8 reps', workTime: 45, tag: 'upper',
-        note: 'Bench. Grip behind head, body rigid ankles to shoulders, 3–5s eccentric. Scale tucked or single-bent-leg if form breaks.' },
-      { name: 'Reverse Crunch', sets: 3, reps: '12–15 reps', workTime: 45, tag: 'lower',
-        note: 'Mat. Hands flat beside hips. Curl the pelvis off the floor, lower over 3s. No momentum, no foot swing.' },
-      { name: 'Copenhagen Plank', sets: 3, reps: '25–30s / side', workTime: 45, tag: 'oblique',
-        note: 'Bench. Straight top leg on the bench, full lever. Add top-leg raises to progress.' },
-      { name: 'Oblique Knee Raise', sets: 3, reps: '10 reps / side', workTime: 45, tag: 'oblique',
-        note: 'Dip bars. Support on straight arms, shoulders down away from the ears. Draw both knees up and across to one side, alternating. Curl the pelvis, no swing.' },
+      { name: 'Tower Leg Raise', sets: 3, reps: '10–15 reps', workTime: 45, tag: 'lower',
+        note: 'Tower abs station. Back against the pad, forearms on the rests, shoulders down. Raise the legs and curl the pelvis up off the pad at the top, lower over 3s. Knees bent to start, straight legs to progress.' },
+      { name: 'Bench Reverse Crunch', sets: 3, reps: '10–12 reps', workTime: 45, tag: 'lower',
+        note: 'Flat bench, hips at the very end, hands gripping the bench behind the head. Let the legs drop below bench level to stretch the lower abs, then curl the knees to the chest and the pelvis off the bench. 3s lowering.' },
+      { name: 'Weighted Bench Crunch', sets: 3, reps: '12–15 reps', workTime: 45, tag: 'upper',
+        note: 'Lying on the bench, feet up on the bench, DB held high on the chest. Curl the ribs toward the pelvis, pause at the top, lower slowly. Low back stays down.' },
+      { name: 'Tower Oblique Raise', sets: 3, reps: '10 reps / side', workTime: 45, tag: 'oblique',
+        note: 'Tower abs station. Same supported position. Draw both knees up and across toward one shoulder, alternating sides. Rotate through the pelvis, no swing.' },
     ]
   },
 ];
@@ -805,6 +804,10 @@ function openPreview(day) {
   showScreen('preview');
 }
 
+function repsFor(ex, setIndex) {
+  return ex.setCues && ex.setCues[setIndex] ? `${ex.setCues[setIndex]} · ${ex.reps}` : ex.reps;
+}
+
 function tagHtml(ex) {
   return ex.tag ? `<span class="tag tag-${ex.tag}">${ex.tag.toUpperCase()}</span>` : '';
 }
@@ -892,7 +895,7 @@ function showExercise(step) {
 
   document.getElementById('phaseLabel').textContent = `Exercise ${exIndex + 1} of ${totalEx}`;
   document.getElementById('currentExName').textContent = ex.name;
-  document.getElementById('repsDisplay').textContent = ex.reps;
+  document.getElementById('repsDisplay').textContent = repsFor(ex, setIndex);
   document.getElementById('exNote').innerHTML = tagHtml(ex) + ex.note;
 
   const indicator = document.getElementById('setIndicator');
@@ -908,7 +911,7 @@ function showExercise(step) {
   nextBtn.textContent = isFinal ? 'Finish' : 'Done Set';
   nextBtn.className = 'btn-primary';
 
-  speak(`${speakName(ex.name)}, set ${setIndex + 1} of ${ex.sets}`);
+  speak(`${speakName(ex.name)}, ${ex.setCues && ex.setCues[setIndex] ? ex.setCues[setIndex] + ', ' : ''}set ${setIndex + 1} of ${ex.sets}`);
   startCountdown('work', ex.workTime);
 }
 
@@ -920,7 +923,7 @@ function showRest(step) {
   if (nextInfo && nextInfo.type === 'exercise') {
     const { ex, setIndex } = nextInfo;
     document.getElementById('nextUpName').textContent = ex.name;
-    document.getElementById('nextUpReps').textContent = `Set ${setIndex + 1} of ${ex.sets} · ${ex.reps}`;
+    document.getElementById('nextUpReps').textContent = `Set ${setIndex + 1} of ${ex.sets} · ${repsFor(ex, setIndex)}`;
     document.getElementById('restSubtitle').textContent = setIndex === 0 ? 'Next exercise' : 'Next set';
   }
 
