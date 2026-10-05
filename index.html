@@ -569,7 +569,7 @@ const STORE_KEY = 'workoutRotation_v2';
 const DAYS = [
   {
     id: 'd1', label: 'Day 1', name: 'Push', dot: '1', dotClass: 'dot-push',
-    focus: 'Incline + vertical press · chest fly', duration: '~18 min',
+    focus: 'Incline + vertical press · chest fly · triceps', duration: '~22 min',
     exercises: [
       { name: 'Incline DB Bench Press', sets: 3, reps: '8 reps', workTime: 45,
         note: 'Bench at 30°. Full ROM, 3s eccentric. Controlled scapular retraction at bottom.' },
@@ -581,6 +581,8 @@ const DAYS = [
         note: 'Neutral grip. Depth to upper arm parallel, add ROM as shoulders allow.' },
       { name: 'DB Lateral Raise', sets: 3, reps: '12 reps', workTime: 40,
         note: 'Rotator cuff and posterior delt longevity. Slight forward lean, pinky up.' },
+      { name: 'DB Overhead Triceps Extension', sets: 3, reps: '10–12 reps', workTime: 45,
+        note: 'Seated or standing, one DB held in both hands. Elbows pointing up and close to the head. Lower behind the head to a full stretch, extend to lockout. Ribs down, no arching.' },
     ]
   },
   {
@@ -600,7 +602,7 @@ const DAYS = [
   },
   {
     id: 'd3', label: 'Day 3', name: 'Hinge / Squat', dot: '3', dotClass: 'dot-lower',
-    focus: 'Posterior chain + unilateral lower', duration: '~16 min',
+    focus: 'Posterior chain + unilateral lower · calves', duration: '~24 min',
     exercises: [
       { name: 'Single-leg Romanian Deadlift', sets: 3, reps: '8 reps / side', workTime: 55,
         note: '3s eccentric. Hip-width hinge, neutral spine. Load progressively.' },
@@ -608,8 +610,13 @@ const DAYS = [
         note: 'DBs at sides or goblet. Rear foot on bench, front knee tracks second toe.' },
       { name: 'Lateral Lunge', sets: 3, reps: '10 reps / side', workTime: 50,
         note: 'DBs at sides. Frontal plane strength. Sit into the hip.' },
-      { name: "Farmer's Carry", sets: 3, reps: '30 m', workTime: 45,
-        note: 'Heavy DBs. Tall posture, brisk pace.' },
+      { name: 'Prone DB Leg Curl', sets: 3, reps: '10–12 reps', workTime: 50,
+        note: 'Face down on the flat bench, knees just off the end, one DB gripped between the feet. Curl the heels toward the glutes, lower over 3s. Hips stay pressed into the bench. Start light.' },
+      { name: 'Single-leg Calf Raise', sets: 3, reps: '12 reps / side', workTime: 55,
+        note: 'Ball of the foot on a step or plate, DB in the same-side hand, other hand on a support. Full stretch at the bottom, pause at the top.' },
+      { name: 'Loaded Carry', sets: 4, reps: '30 m', workTime: 45,
+        setCues: ["Farmer's carry", 'Suitcase carry', "Farmer's carry", 'Suitcase carry'],
+        note: "Alternate set to set. Farmer's: a heavy DB in each hand, tall posture, brisk pace. Suitcase: one DB only, stay level with no lean, switch hands halfway." },
     ]
   },
   {

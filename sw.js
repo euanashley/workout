@@ -2,7 +2,7 @@
    Network-first so edits to index.html show up as soon as you reload online,
    cache fallback so the app still runs with no signal. */
 
-const CACHE = 'workout-v3';
+const CACHE = 'workout-v4';
 const ASSETS = [
   './',
   './index.html',
