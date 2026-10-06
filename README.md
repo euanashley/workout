@@ -65,3 +65,4 @@ State is a single `localStorage` key, `workoutRotation_v2`, holding the last day
 - The `reset` link clears history and sends you back to Day 1.
 
 Installing to the Home Screen gives the app its own persistent storage, so the rotation survives reboots and Safari cache clearing.
+
